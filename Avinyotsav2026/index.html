@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVINYOTSAV 2.0 - TKR College Fest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0326;
+            --bg-gradient: linear-gradient(135deg, #0f0326 0%, #1a0b3d 40%, #2d1b69 100%);
+            --primary: #a855f7;
+            --secondary: #fbbf24;
+            --accent: #34d399;
+            --glass-bg: rgba(26, 11, 61, 0.6);
+            --glass-border: rgba(168, 85, 247, 0.3);
+            --text-light: #f3f4f6;
+            --text-muted: #d1d5db;
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Starfield Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration, 3s) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #a855f7, #ec4899, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Header / Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 3, 38, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            /* Full viewport height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 6rem 1rem 4rem;
+            /* Top padding for fixed header */
+            position: relative;
+        }
+
+        .hero-logos {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            /* Reduced gap for better mobile fit */
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-logo {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.6));
+            transition: transform 0.3s ease;
+        }
+
+        .hero-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            /* Responsive font size */
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero-date {
+            font-size: 1.25rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--secondary);
+            border-radius: 50px;
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        .hero-tagline {
+            font-size: 1.1rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        /* Scroll Down Indicator */
+        .scroll-down {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0) translateX(-50%);
+            }
+
+            40% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+
+            60% {
+                transform: translateY(-5px) translateX(-50%);
+            }
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            margin: 0.5rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.4);
+            border-color: var(--primary);
+        }
+
+        /* About Section */
+        .about-text {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Events Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .category-label {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .event-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            text-align: center;
+        }
+
+        .event-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(90deg, #8b5cf6, #a855f7);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Contacts */
+        .contact-card {
+            text-align: center;
+        }
+
+        .contact-role {
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .contact-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-phone {
+            color: var(--accent);
+            font-size: 1rem;
+            font-family: monospace;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .contact-phone:hover {
+            color: var(--secondary);
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 3, 38, 0.95);
+            border-top: 1px solid var(--glass-border);
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .social-btn {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            max-width: 250px;
+            margin: 1.5rem auto;
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+                z-index: 1001;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                /* Hidden by default */
+                height: 100vh;
+                width: 70%;
+                background: rgba(15, 3, 38, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .hero {
+                padding-top: 5rem;
+                justify-content: flex-start;
+            }
+
+            .hero-logos {
+                gap: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-logo {
+                height: 70px;
+            }
+
+            /* Slightly smaller logos on mobile */
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            /* Stack cards on mobile */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stars" id="starfield"></div>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="#" class="nav-logo">TKR<span>CET</span></a>
+            <button class="mobile-toggle" aria-label="Toggle Menu">☰</button>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#events" class="nav-link">Events</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#social" class="nav-link">Follow Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-logos fade-in">
+                <img src="https://i.ibb.co/qKxkmRC/Tkrcet-logo.jpg" alt="TKRCET Logo" class="hero-logo">
+                <img src="https://i.ibb.co/Vp2XWsBR/Avinyotsav-logo.jpg" alt="AVINYOTSAV Logo" class="hero-logo">
+            </div>
+
+            <div class="fade-in">
+                <h1 class="hero-title gradient-text">AVINYOTSAV 2.0</h1>
+                <p class="hero-subtitle">2026 Edition</p>
+                <div class="hero-date">📅 6th & 7th February 2026</div>
+                <p class="hero-tagline">🏆 Win Exciting Prizes! 🏆</p>
+            </div>
+
+            <div class="scroll-down">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+                </svg>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2 class="section-title">About the Fest</h2>
+                </div>
+                <div class="glass-card about-text fade-in">
+                    <p>AVINYOTSAV 2.0 is the flagship technical and cultural fest organized by the Department of
+                        Computer Science & Engineering (Data Science) at TKR College of Engineering & Technology.</p>
+                    <p>Join us for two exciting days filled with technical competitions, creative challenges, panel
+                        discussions, and much more. This is your opportunity to showcase your skills, learn from
+                        experts, and win exciting prizes!</p>
+                    <p>Whether you're a coding enthusiast, a creative thinker, or someone who loves challenges,
+                        AVINYOTSAV 2.0 has something special for everyone.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events" class="section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2 class="section-title">Events</h2>
+                </div>
+
+                <!-- Technical -->
+                <div class="events-group">
+                    <h3 class="category-label fade-in">Technical Events</h3>
+                    <div class="grid-container" id="technical-events">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Non-Technical -->
+                <div class="events-group">
+                    <h3 class="category-label fade-in">Non-Technical Events</h3>
+                    <div class="grid-container" id="non-technical-events">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Special -->
+                <div class="events-group">
+                    <h3 class="category-label fade-in">Special Event</h3>
+                    <div class="grid-container" id="gnyaan-grid"
+                        style="grid-template-columns: minmax(300px, 600px); justify-content: center;">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2 class="section-title">Organizers</h2>
+                </div>
+                <div class="grid-container" id="contacts">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Section -->
+        <section id="social" class="section">
+            <div class="container" style="text-align: center;">
+                <div class="glass-card fade-in" style="max-width: 600px; margin: 0 auto;">
+                    <h2 class="section-title" style="font-size: 2rem;">Stay Connected!</h2>
+                    <p style="margin: 1rem 0; color: var(--text-muted);">Follow us on Instagram for latest updates,
+                        behind-the-scenes content, and event announcements!</p>
+                    <a href="https://instagram.com/avinyotsav.tkr" target="_blank" class="btn social-btn">
+                        <span>📷</span> Follow on Instagram
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <h3 style="color: var(--primary); margin-bottom: 0.5rem;">TKR College of Engineering & Technology</h3>
+            <p style="color: var(--secondary); font-weight: 600; margin-bottom: 1rem;">Department of Computer Science &
+                Engineering (Data Science)</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">© 2026 AVINYOTSAV 2.0. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data Preservation
+        const eventData = {
+            technical: [
+                { name: "Debugging", link: "https://forms.gle/hFEDYHfuMN3tDsNJA" },
+                { name: "Data Visualization", link: "https://forms.gle/hFEDYHfuMN3tDsNJA" },
+                { name: "One Minute Coding", link: "https://forms.gle/hFEDYHfuMN3tDsNJA" },
+                { name: "Web Designing", link: "https://forms.gle/hFEDYHfuMN3tDsNJA" },
+                { name: "Promptathon", link: "https://forms.gle/hFEDYHfuMN3tDsNJA" },
+                { name: "Paper & Poster Presentation", link: "https://forms.gle/hFEDYHfuMN3tDsNJA" }
+            ],
+            gnyaanGrid: [
+                { name: "GnyaanGrid (Panel Discussions)", link: "https://docs.google.com/forms/d/e/1FAIpQLSf5kQVKNORoGd2zpB8qkljPaFV9pfGKL1nBHhbpGR4qEkknGA/viewform?usp=publish-editor" }
+            ],
+            nonTechnical: [
+                { name: "Number Hunt", link: "https://forms.gle/qUYvGTP3LJ33jVZv7" },
+                { name: "Quiz", link: "https://forms.gle/qUYvGTP3LJ33jVZv7" },
+                { name: "Treasure Hunt", link: "https://forms.gle/qUYvGTP3LJ33jVZv7" },
+                { name: "Guess The Movie", link: "https://forms.gle/qUYvGTP3LJ33jVZv7" }
+            ]
+        };
+
+        const contacts = [
+            { role: "President", name: "Devender", phone: "+91-9908351085", whatsapp: "https://wa.me/919908351085" },
+            { role: "Vice President", name: "Praneetha", phone: "+91-9346997640", whatsapp: "https://wa.me/919346997640" },
+            { role: "Joint Secretary", name: "Siva Aditya Polisetty", phone: "+91-7893638187", whatsapp: "https://wa.me/917893638187" },
+            { role: "Treasurer", name: "Snigdha Sumkara", phone: "+91-9505807751", whatsapp: "https://wa.me/919505807751" },
+            { role: "Head of Creative Media", name: "Pavan Sai", phone: "+91-6300123164", whatsapp: "https://wa.me/916300123164" }
+        ];
+
+        // Component Rendering Methods
+        function createCard(title, link = null) {
+            const card = document.createElement('div');
+            card.className = 'glass-card event-card fade-in';
+
+            let btnHtml = '';
+            if (link) {
+                btnHtml = `<button class="btn" onclick="window.open('${link}', '_blank')">Register Now</button>`;
+            }
+
+            card.innerHTML = `
+                <div class="event-name">${title}</div>
+                ${btnHtml}
+            `;
+            return card;
+        }
+
+        function createContactCard(contact) {
+            const card = document.createElement('div');
+            card.className = 'glass-card contact-card fade-in';
+
+            card.innerHTML = `
+                <div class="contact-role">${contact.role}</div>
+                <div class="contact-name">${contact.name}</div>
+                <a href="${contact.whatsapp}" target="_blank" class="contact-phone" title="Chat on WhatsApp">
+                   <span>💬</span> ${contact.phone}
+                </a>
+            `;
+            return card;
+        }
+
+        // Render All Sections
+        function renderSection(containerId, data, renderFn) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            data.forEach(item => {
+                container.appendChild(renderFn(item));
+            });
+        }
+
+        // Initialize Content
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSection('technical-events', eventData.technical, item => createCard(item.name, item.link));
+            renderSection('non-technical-events', eventData.nonTechnical, item => createCard(item.name, item.link));
+            renderSection('gnyaan-grid', eventData.gnyaanGrid, item => createCard(item.name, item.link));
+            renderSection('contacts', contacts, createContactCard);
+
+            // Intersection Observer for Animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        });
+
+        // Mobile Menu Logic
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const links = document.querySelectorAll('.nav-link');
+
+        function toggleMenu() {
+            navLinks.classList.toggle('active');
+            let isExpanded = navLinks.classList.contains('active');
+            mobileToggle.innerHTML = isExpanded ? '✕' : '☰';
+            mobileToggle.setAttribute('aria-expanded', isExpanded);
+        }
+
+        mobileToggle.addEventListener('click', toggleMenu);
+
+        // Close menu on link click
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) toggleMenu();
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target) && navLinks.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Starfield Animation
+        function createStars() {
+            const starfield = document.getElementById('starfield');
+            const count = 100;
+
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                starfield.appendChild(star);
+            }
+        }
+        createStars();
+
+    </script>
+</body>
+
+</html>
