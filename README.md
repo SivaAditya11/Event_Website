@@ -40,9 +40,6 @@ The website is designed with a modern UI/UX approach and built using pure **HTML
 
 ```
 ├── index.html
-├── assets/
-│   ├── images/
-│   └── logos/
 └── README.md
 ```
 
